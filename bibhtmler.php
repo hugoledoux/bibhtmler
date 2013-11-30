@@ -168,17 +168,17 @@ class bibhtmler {
 	
 	public $options = array(
 		'lang' => 'en',
-		'beforeentry' => '<li>',
-		'afterentry' => '</li>',
+		'beforeentry' => '<p>',
+		'afterentry' => '</p>',
 		'tabs' => 5,
 		'groupby' => '',
 		'order' => 'inversechronological',
 		'beforegroup' => '',
 		'aftergroup' => '',
-		'beforegrouptitle' => '<h4>',
-		'aftergrouptitle' => '</h4>',
-		'beforeall' => '<ul>',
-		'afterall' => '</ul>',
+		'beforegrouptitle' => '<h2>',
+		'aftergrouptitle' => '</h2>',
+		'beforeall' => '',
+		'afterall' => '',
 		'capitalisation' => 'firstonly'
 	);
 	
@@ -217,8 +217,8 @@ class bibhtmler {
 		if ($this->options['groupby'] != '' and !isset($useroptions['beforeall']) and !isset($useroptions['afterall'])) {
 			$this->options['beforeall'] = '';
 			$this->options['afterall'] = '';
-			$this->options['beforegroup'] = '<ul>';
-			$this->options['aftergroup'] = '</ul>';
+			$this->options['beforegroup'] = '';
+			$this->options['aftergroup'] = '';
 		}
 	}
 
@@ -314,19 +314,19 @@ class bibhtmler {
 			
 			case 'book':
 				$outwhat .= $this->processtitle($in['title']);
-				if (array_key_exists('author', $in)) $outwho .= processauthors($in['author']);
-				else $outwho .= processauthors($in['editor']);
+				if (array_key_exists('author', $in)) $outwho .= $this->processauthors($in['author']);
+				else $outwho .= $this->processauthors($in['editor']);
 				if (array_key_exists('series', $in)) {
 					if (array_key_exists('volume', $in)) $outwhere[] = $this->localisedtext[$this->options['lang']]['Volume'].' '.$this->processtext($in['volume']).' '.$this->localisedtext[$this->options['lang']]['of'].' '.$this->processtext($in['series']);
 					else $outwhere[] = $this->processtext($in['series']);
 					if (array_key_exists('number', $in)) $outwhere[count($outwhere)-1] .= $this->processtext($in['number']);
-				} if (array_key_exists('author', $in) and array_key_exists('editor', $in)) $outwhere[] = processauthors($in['editor'])." (".$this->localisedtext[$this->options['lang']]['eds.'].")";
+				} if (array_key_exists('author', $in) and array_key_exists('editor', $in)) $outwhere[] = $this->processauthors($in['editor'])." (".$this->localisedtext[$this->options['lang']]['eds.'].")";
 				$outwhere[] = $this->processtext($in['publisher']);
 				if (array_key_exists('edition', $in)) $outwhere[] = $this->processtest($in['edition']).' '.$this->localisedtext[$this->options['lang']]['Edition'];
 				if (array_key_exists('address', $in)) $outwhere[] = $this->processtext($in['address']);
 				if (array_key_exists('month', $in)) $outwhere[] = $this->processmonth($in['month'])." ".$this->processtext($in['year']);
 				else $outwhere[] = $this->processtext($in['year']);
-				if (array_key_exists('note', $in)) $outnote .= processtext($in['note']);
+				if (array_key_exists('note', $in)) $outnote .= $this->processtext($in['note']);
 				break;
 			
 			case 'booklet':
@@ -336,7 +336,7 @@ class bibhtmler {
 				if (array_key_exists('address', $in)) $outwhere[] = $this->processtext($in['address']);
 				if (array_key_exists('month', $in) and array_key_exists('year', $in)) $outwhere[] = processmonth($in['month'])." ".processtext($in['year']);
 				else if (array_key_exists('year', $in)) $outwhere[] = processtext($in['year']);
-				if (array_key_exists('note', $in)) $outnote .= processtext($in['note']);
+				if (array_key_exists('note', $in)) $outnote .= $this->processtext($in['note']);
 				break;
 			
 			case 'inbook':
@@ -483,20 +483,26 @@ class bibhtmler {
 				break;
 		}
 		
-		if (strlen($outwhat) > 0) $out .= "<strong>".$outwhat."</strong>. ";
-		if (strlen($outwho) > 0) $out .= $outwho.". ";
-		if (count($outwhere) > 0) $out .= implode(", ", $outwhere).". ";
-		if (strlen($outnote) > 0) $out .= $outnote.". ";
-		
-		if (array_key_exists('info', $in)) $out .= '<span class="text-danger"> '.$this->processtext($in['info']).'</span>.';
-		$out .= '<br>';
-		if (array_key_exists('pdf', $in)) $out .= ' <a href="'.$this->processtext($in['pdf']).'"><i class="icon-file-text-alt"></i> PDF</a>';
-		if (array_key_exists('paper', $in)) $out .= ' <a href="'.$this->processtext($in['paper']).'"><i class="icon-file-text-alt"></i> '.$this->localisedtext[$this->options['lang']]['Paper'].'</a>';
-		if (array_key_exists('poster', $in)) $out .= ' <a href="'.$this->processtext($in['poster']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Poster'].'</a>';
-		if (array_key_exists('presentation', $in)) $out .= ' <a href="'.$this->processtext($in['presentation']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Slides'].'</a>';
-		if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="icon-external-link"></i> DOI</a>';
-		$out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="icon-collapse"></i> BibTeX</a>';
-		$out .= '<div id="bib'.$in['key'].'" class="collapse"  tabindex="-1"><pre>'.$this->getbibtex($in)."</pre></div>";
+		if (array_key_exists('web', $in) && ($in['web'] = 'false')) {
+			$out .= '';
+		}
+		else {
+			if (strlen($outwhat) > 0) $out .= "<strong>".$outwhat."</strong>. ";
+			if (strlen($outwho) > 0) $out .= $outwho.". ";
+			if (count($outwhere) > 0) $out .= implode(", ", $outwhere).". ";
+			if (strlen($outnote) > 0) $out .= $outnote.". ";
+			
+			// if (array_key_exists('info', $in)) $out .= '<span class="label label-important">'.$in['info'].'</span>.';
+			if (array_key_exists('info', $in)) $out .= '<span class="label label-important">'.$this->processtext($in['info']).'</span>.';
+			// $out .= '<br>';
+			if (array_key_exists('pdf', $in)) $out .= ' <a href="'.$this->processtext($in['pdf']).'"><i class="icon-file-text-alt"></i> PDF</a>';
+			// if (array_key_exists('paper', $in)) $out .= ' <a href="'.$this->processtext($in['paper']).'"><i class="icon-file-text-alt"></i> '.$this->localisedtext[$this->options['lang']]['Paper'].'</a>';
+			// if (array_key_exists('poster', $in)) $out .= ' <a href="'.$this->processtext($in['poster']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Poster'].'</a>';
+			if (array_key_exists('presentation', $in)) $out .= ' <a href="'.$this->processtext($in['presentation']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Slides'].'</a>';
+			if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="icon-external-link"></i> DOI</a>';
+			// $out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="icon-collapse"></i> BibTeX</a>';
+			// $out .= '<div id="bib'.$in['key'].'" class="collapse"  tabindex="-1"><pre>'.$this->getbibtex($in)."</pre></div>";
+		}
 	
 		return $out;
 	}
