@@ -498,14 +498,14 @@ class bibhtmler {
 			if (array_key_exists('pdf', $in)) {
 				$t = $this->processtext($in['pdf']);
 				if (substr($t, 0, 4) <> 'http') 
-					$out .= ' <a href="pdfs/'.$t.'"><i class="icon-file-text"></i> PDF</a>';
+					$out .= ' <a href="pdfs/'.$t.'"><i class="icon-file-text"></i></a>';
 				else
-					$out .= ' <a href="'.$t.'"><i class="icon-file-text"></i> PDF</a>';
+					$out .= ' <a href="'.$t.'"><i class="icon-file-text"></i></a>';
 			}
 			// if (array_key_exists('paper', $in)) $out .= ' <a href="'.$this->processtext($in['paper']).'"><i class="icon-file-text-alt"></i> '.$this->localisedtext[$this->options['lang']]['Paper'].'</a>';
 			// if (array_key_exists('poster', $in)) $out .= ' <a href="'.$this->processtext($in['poster']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Poster'].'</a>';
-			if (array_key_exists('presentation', $in)) $out .= ' <a href="'.$this->processtext($in['presentation']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Slides'].'</a>';
-			if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="icon-external-link"></i> DOI</a>';
+			if (array_key_exists('presentation', $in)) $out .= ' <a href="'.$this->processtext($in['presentation']).'"><i class="icon-picture"></i>/a>';
+			if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="icon-external-link"></i>/a>';
 			// $out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="icon-collapse"></i> BibTeX</a>';
 			// $out .= '<div id="bib'.$in['key'].'" class="collapse"  tabindex="-1"><pre>'.$this->getbibtex($in)."</pre></div>";
 		}
@@ -521,6 +521,7 @@ class bibhtmler {
 			'/\\\\\'e/',
 			'/\\\\\'i/',
 			'/\\\\\'o/',
+			'/\\\\\"o/',
 			'/\\\\\'u/',
 			'/\\\\\^a/',
 			'/\\\\\^e/',
@@ -548,7 +549,8 @@ class bibhtmler {
 			'/\\\\\`O/',
 			'/\\\\\`U/',
 			'/\\\\~n/',
-			'/\\\\~N/'
+			'/\\\\~N/',
+			'/\\\\\&/',
 		);
 		$replacements = array(
 			'—',
@@ -557,6 +559,7 @@ class bibhtmler {
 			'é',
 			'í',
 			'ó',
+			'ö',
 			'ú',
 			'â',
 			'ê',
@@ -584,7 +587,8 @@ class bibhtmler {
 			'Ò',
 			'Ù',
 			'ñ',
-			'Ñ'
+			'Ñ',
+			'&'
 		);
 		$out = trim(preg_replace('/[{}]/', '', $in), ' ');
 		$out = htmlentities(preg_replace($patterns, $replacements, $out), ENT_COMPAT, 'UTF-8');
