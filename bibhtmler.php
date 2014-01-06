@@ -175,8 +175,8 @@ class bibhtmler {
 		'order' => 'inversechronological',
 		'beforegroup' => '',
 		'aftergroup' => '',
-		'beforegrouptitle' => '<h2>',
-		'aftergrouptitle' => '</h2>',
+		'beforegrouptitle' => '<h3>',
+		'aftergrouptitle' => '</h3>',
 		'beforeall' => '',
 		'afterall' => '',
 		'capitalisation' => 'firstonly'
@@ -493,14 +493,14 @@ class bibhtmler {
 			if (strlen($outnote) > 0) $out .= $outnote.". ";
 			
 			// if (array_key_exists('info', $in)) $out .= '<span class="label label-important">'.$in['info'].'</span>.';
-			if (array_key_exists('info', $in)) $out .= '<span class="label label-important">'.trim($in['info'], '{}').'</span>.';
-			$out .= '<br>';
+			if (array_key_exists('info', $in)) $out .= '<span class="label label-default">'.trim($in['info'], '{}').'</span>.';
+			// $out .= '<br>';
 			if (array_key_exists('pdf', $in)) {
 				$t = $this->processtext($in['pdf']);
 				if (substr($t, 0, 4) <> 'http') 
-					$out .= ' <a href="figs/'.$t.'"><i class="icon-file-text-alt"></i> PDF</a>';
+					$out .= ' <a href="pdfs/'.$t.'"><i class="icon-file-text"></i> PDF</a>';
 				else
-					$out .= ' <a href="'.$t.'"><i class="icon-file-text-alt"></i> PDF</a>';
+					$out .= ' <a href="'.$t.'"><i class="icon-file-text"></i> PDF</a>';
 			}
 			// if (array_key_exists('paper', $in)) $out .= ' <a href="'.$this->processtext($in['paper']).'"><i class="icon-file-text-alt"></i> '.$this->localisedtext[$this->options['lang']]['Paper'].'</a>';
 			// if (array_key_exists('poster', $in)) $out .= ' <a href="'.$this->processtext($in['poster']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Poster'].'</a>';
