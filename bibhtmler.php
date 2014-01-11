@@ -493,7 +493,7 @@ class bibhtmler {
 			if (strlen($outnote) > 0) $out .= $outnote.". ";
 			
 			// if (array_key_exists('info', $in)) $out .= '<span class="label label-important">'.$in['info'].'</span>.';
-			if (array_key_exists('info', $in)) $out .= '<span class="label label-default">'.trim($in['info'], '{}').'</span>.';
+			if (array_key_exists('info', $in)) $out .= '<span class="label label-default">'.trim($in['info'], '{}').'</span>';
 			// $out .= '<br>';
 			if (array_key_exists('pdf', $in)) {
 				$t = $this->processtext($in['pdf']);
