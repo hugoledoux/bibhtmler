@@ -252,7 +252,9 @@ class bibhtmler {
 			} $out .= $word.' ';
 		} if ($this->options['capitalisation'] == 'headline' or $this->options['capitalisation'] == 'firstonly') $out = ucfirst($out);
 		$out = substr($out, 0, -1);
-		return $out;
+		$tmp = $this->processtext($out);
+		return $tmp;
+		// return $out;
 	}
 
 	function processauthors($in) {
@@ -529,6 +531,8 @@ class bibhtmler {
 			'/\\\\\'i/',
 			'/\\\\\'o/',
 			'/\\\\\"o/',
+			'/\\\\\"u/',
+			'/\\\\\"i/',
 			'/\\\\\'u/',
 			'/\\\\\^a/',
 			'/\\\\\^e/',
@@ -567,6 +571,8 @@ class bibhtmler {
 			'í',
 			'ó',
 			'ö',
+			'ü',
+			'ï',
 			'ú',
 			'â',
 			'ê',
