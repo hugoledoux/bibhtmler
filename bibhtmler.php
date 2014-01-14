@@ -515,8 +515,8 @@ class bibhtmler {
 			// if (array_key_exists('poster', $in)) $out .= ' <a href="'.$this->processtext($in['poster']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Poster'].'</a>';
 			// if (array_key_exists('slides', $in)) $out .= ' <a href="'.$this->processtext($in['slides']).'"><i class="icon-picture"></i></a>';
 			if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="icon-external-link"></i></a>';
-			// $out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="icon-collapse"></i> BibTeX</a>';
-			// $out .= '<div id="bib'.$in['key'].'" class="collapse"  tabindex="-1"><pre>'.$this->getbibtex($in)."</pre></div>";
+			$out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="icon-collapse"></i></a>';
+			$out .= '<div id="bib'.$in['key'].'" class="collapse"  tabindex="-1"><pre>'.$this->getbibtex($in)."</pre></div>";
 		}
 	
 		return $out;
