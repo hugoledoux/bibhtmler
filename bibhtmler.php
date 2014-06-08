@@ -500,22 +500,22 @@ class bibhtmler {
 			if (array_key_exists('pdf', $in)) {
 				$t = $this->processtext($in['pdf']);
 				if (substr($t, 0, 4) <> 'http') 
-					$out .= ' <a href="pdfs/'.$t.'"><i class="icon-file-text"></i></a>';
+					$out .= ' <a href="pdfs/'.$t.'"><i class="fa fa-file-pdf-o"></i></a>';
 				else
-					$out .= ' <a href="'.$t.'"><i class="icon-file-text"></i></a>';
+					$out .= ' <a href="'.$t.'"><i class="fa fa-file-pdf-o"></i></a>';
 			}
 			if (array_key_exists('slides', $in)) {
 				$t = $this->processtext($in['slides']);
 				if (substr($t, 0, 4) <> 'http') 
-					$out .= ' <a href="pdfs/'.$t.'"><i class="icon-picture"></i></a>';
+					$out .= ' <a href="pdfs/'.$t.'"><i class="fa fa-file-image-o"></i></a>';
 				else
-					$out .= ' <a href="'.$t.'"><i class="icon-picture"></i></a>';
+					$out .= ' <a href="'.$t.'"><i class="fa fa-file-image-o"></i></a>';
 			}
 			// if (array_key_exists('paper', $in)) $out .= ' <a href="'.$this->processtext($in['paper']).'"><i class="icon-file-text-alt"></i> '.$this->localisedtext[$this->options['lang']]['Paper'].'</a>';
 			// if (array_key_exists('poster', $in)) $out .= ' <a href="'.$this->processtext($in['poster']).'"><i class="icon-picture"></i> '.$this->localisedtext[$this->options['lang']]['Poster'].'</a>';
 			// if (array_key_exists('slides', $in)) $out .= ' <a href="'.$this->processtext($in['slides']).'"><i class="icon-picture"></i></a>';
-			if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="icon-external-link"></i></a>';
-			$out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="icon-collapse"></i></a>';
+			if (array_key_exists('doi', $in)) $out .= ' <a href="'.$this->processtext($in['doi']).'"><i class="fa fa-external-link"></i></a>';
+			$out .= ' <a href="#bib'.$in['key'].'" data-toggle="collapse"><i class="fa fa-toggle-down"></i></a>';
 			$out .= '<div id="bib'.$in['key'].'" class="collapse"  tabindex="-1"><pre>'.$this->getbibtex($in)."</pre></div>";
 		}
 	
